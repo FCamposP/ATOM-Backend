@@ -1,4 +1,4 @@
-src/infrastructure/database/serviceAccountKey.json
+functions/src/infrastructure/database/serviceAccountKey.json
 # Dependencies
 node_modules/
 npm-debug.log*
@@ -56,3 +56,4 @@ sessions/
 *.pem
 *.key
 *.crt
+functions/src/infrastructure/database/serviceAccountKey.json
