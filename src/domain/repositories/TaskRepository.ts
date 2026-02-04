@@ -1,9 +1,9 @@
-import { Task } from "../entities/Task";
+import { ITask } from "../entities/Task";
 
 export interface TaskRepository {
-  create(task: Task): Promise<Task>;
-  findByUser(userId: string): Promise<Task[]>;
-  findById(id: string): Promise<Task | null>;
-  update(id: string, updates: Partial<Task>): Promise<Task | null>;
+  create(task: ITask): Promise<ITask>;
+  findByUser(userId: string): Promise<ITask[]>;
+  findById(id: string): Promise<ITask | null>;
+  update(id: string, updates: Partial<ITask>): Promise<ITask | null>;
   softDelete(id: string): Promise<void>;
 }

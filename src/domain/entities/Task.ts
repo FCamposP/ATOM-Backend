@@ -1,12 +1,11 @@
-export class Task {
-    constructor(
-        public id: string,
-        public userId: string,
-        public title: string,
-        public description: string | undefined | null,
-        public completed: boolean,
-        public createdAt: Date,
-        public isActive: boolean,
-        public deletedAt: Date | undefined | null,
-    ) { }
+export interface ITask {
+    id: string;
+    userId: string;
+    title: string;
+    description: string;
+    completed: boolean;
+    createdAt: Date;
+    isActive: boolean;
+    deletedAt?: Date;
+    modifiedAt?: Date
 }

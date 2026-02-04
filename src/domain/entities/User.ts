@@ -1,8 +1,5 @@
-export class User {
-  constructor(
-    public id: string,
-    public email: string,
-    public password: string|undefined,
-    public createdAt: Date
-  ) {}
+export interface IUser {
+  id: string;
+  email: string;
+  createdAt: Date;
 }

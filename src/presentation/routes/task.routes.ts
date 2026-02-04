@@ -6,6 +6,7 @@ import { createTask, deleteTask, getTaskById, getTasks, updateTask } from "../co
 
 
 const router = Router();
+router.use(authMiddleware);
 
 router.get("/", getTasks);
 router.get("/:id", getTaskById);
@@ -13,6 +14,5 @@ router.post("/", validate(createTaskSchema), createTask);
 router.put("/:id", validate(updateTaskSchema), updateTask);
 router.delete("/:id", deleteTask);
 
-router.use(authMiddleware);
 
 export default router;

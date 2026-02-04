@@ -1,22 +1,12 @@
-import { randomUUID } from "crypto";
-import { Task } from "../../../domain/entities/Task";
 import { TaskRepository } from "../../../domain/repositories/TaskRepository";
+import { TaskFactory } from "../../../domain/factories/task.factory";
+import { TaskCreateDto } from "../../dtos/task-create.dto";
 
 export class CreateTaskUseCase {
-  constructor(private repo: TaskRepository) {}
+  constructor(private repo: TaskRepository) { }
 
-  async execute(userId: string, title: string, description?: string) {
-    const task = new Task(
-      randomUUID(),
-      userId,
-      title,
-      description,
-      false,
-      new Date(),
-      true,
-      null
-    );
-
+  async execute(userId: string, taskCreateDto: TaskCreateDto) {
+    const task = TaskFactory.create(userId, taskCreateDto.title, taskCreateDto.description);
     return this.repo.create(task);
   }
 }

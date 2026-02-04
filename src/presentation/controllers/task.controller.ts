@@ -1,13 +1,14 @@
 import { Response } from "express";
 import { successResponse, errorResponse } from "../../shared/response-wrapper";
 import { AuthRequest } from "../../middlewares/auth.middleware";
-import { FirestoreTaskRepository } from "../../infrastructure/repositories/FirestoreTaskRepository";
 import { CreateTaskUseCase } from "../../application/use-cases/tasks/CreateTask.usecase";
 import { GetTasksByUserUseCase } from "../../application/use-cases/tasks/GetTasksByUser.usecase";
 import { GetTaskByIdUseCase } from "../../application/use-cases/tasks/GetTaskById.usecase";
 import { UpdateTaskUseCase } from "../../application/use-cases/tasks/UpdateTask.usecase";
 import { DeleteTaskUseCase } from "../../application/use-cases/tasks/DeleteTask.usecase";
 import { asyncHandler } from "../../shared/async-handler";
+import { FirestoreTaskRepository } from "../../infrastructure/repositories/FirestoreTaskRepository";
+import { TaskCreateDto } from "../../application/dtos/task-create.dto";
 
 const repo = new FirestoreTaskRepository();
 
@@ -20,7 +21,7 @@ const deleteTaskUC = new DeleteTaskUseCase(repo);
 export const getTasks = asyncHandler(async (req: AuthRequest, res: Response) => {
   const tasks = await getTaskByUserIdsUC.execute(req.user?.userId ?? "");
 
-  res.status(200).json(successResponse(200, tasks, "Tasks retrieved"));
+  res.status(200).json(successResponse(200, tasks, "Tareas obtenidas"));
 });
 
 export const getTaskById = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -29,21 +30,21 @@ export const getTaskById = asyncHandler(async (req: AuthRequest, res: Response) 
   const task = await getTaskByIdUC.execute(taskId, req.user?.userId ?? "");
 
   if (!task) {
-    return res.status(404).json(errorResponse(404, "Task not found"));
+    return res.status(404).json(errorResponse(404, "La tarea no fue encontrada"));
   }
 
-  res.status(200).json(successResponse(200, task, "Task retrieved"));
+  res.status(200).json(successResponse(200, task, "Tarea obtenida con éxito"));
 });
 
 export const createTask = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const {title, description}= req.body;
-  const task = await  createTaskUC.execute(req.user?.userId ?? "",title,description);
+  const dto: TaskCreateDto = req.body;
+  const task = await  createTaskUC.execute(req.user?.userId ?? "",dto);
 
   if (!task) {
-    return res.status(404).json(errorResponse(404, "Task not found"));
+    return res.status(404).json(errorResponse(404, "No se encontraron tareas"));
   }
 
-  res.status(201).json(successResponse(200, task, "Task retrieved"));
+  res.status(201).json(successResponse(200, task, "Tarea creada exitosamente"));
 });
 
 export const updateTask = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -54,11 +55,11 @@ export const updateTask = asyncHandler(async (req: AuthRequest, res: Response) =
   const existingTask = await getTaskByIdUC.execute(taskId, req.user?.userId ?? "");
 
   if (!existingTask) {
-    return res.status(404).json(errorResponse(404, "Task not found or not yours"));
+    return res.status(404).json(errorResponse(404, "La tarea no fue encontrada"));
   }
 
   const task = await updateTaskUC.execute(taskId, req.user?.userId ?? "", req.body);
-  return res.status(200).json(successResponse(201, task, "Task created successfully"));
+  return res.status(200).json(successResponse(201, task, "Tarea actualizada exitosamente"));
 });
 
 export const deleteTask = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -69,11 +70,11 @@ export const deleteTask = asyncHandler(async (req: AuthRequest, res: Response) =
   const existingTask = await getTaskByIdUC.execute(taskId, req.user?.userId ?? "");
 
   if (!existingTask) {
-    return res.status(404).json(errorResponse(404, "Task not found or not yours"));
+    return res.status(404).json(errorResponse(404, "La tarea no fue econtrada"));
   }
 
   const task = await deleteTaskUC.execute(taskId, req.user?.userId ?? "");
-  return res.status(200).json(successResponse(201, task, "Task created successfully"));
+  return res.status(200).json(successResponse(201, task, "Tarea eliminada con exitosamente"));
 });
 
 

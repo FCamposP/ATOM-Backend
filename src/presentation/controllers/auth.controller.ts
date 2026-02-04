@@ -16,13 +16,13 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   if (!email) {
     return res
       .status(400)
-      .json(errorResponse(400, "Email is required"));
+      .json(errorResponse(400, "Email es requerido"));
   }
 
   const user = await registerUseCase.execute(email);
 
   res.status(201).json(
-    successResponse(201, { id: user.id, email: user.email }, "User registered")
+    successResponse(201, user, "Usuario registrado")
   );
 });
 
@@ -31,7 +31,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email } = req.body;
 
   if (!email) {
-    return res.status(400).json(errorResponse(400, "Email is required"));
+    return res.status(400).json(errorResponse(400, "Email es requerido"));
   }
   const token = await loginUseCase.execute(email);
 
@@ -40,5 +40,5 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   }
 
-  res.status(200).json(successResponse(200, { token }, "Login successful"));
+  res.status(200).json(successResponse(200, { token }, "Usuario verificado"));
 });
