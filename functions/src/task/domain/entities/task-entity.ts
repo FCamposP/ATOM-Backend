@@ -7,6 +7,6 @@ export class Task {
     public completed: boolean,
     public readonly createdAt: Date,
     public isActive: boolean,
-    public deletedAt?: Date
+    public deletedAt?: Date|null
   ) {}
 }

@@ -6,9 +6,9 @@
     "node": "20"
   },
   "scripts": {
-    "dev": "nodemon --exec ts-node src/main.ts",
-    "dev:debug": "nodemon --exec node --inspect=0.0.0.0:9229 -r ts-node/register src/main.ts",
-    "debug": "node --inspect -r ts-node/register src/main.ts",
+    "dev": "ts-node-dev --respawn --transpile-only functions/src/main.ts",
+    "dev:debug": "ts-node-dev --inspect --respawn --transpile-only functions/src/main.ts",
+    "debug": "node --inspect -r ts-node/register functions/src/main.ts",
     "build": "tsc",
     "start": "node dist/main.js",
     "deploy": "npm run build && firebase deploy --only functions"

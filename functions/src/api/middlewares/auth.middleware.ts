@@ -1,5 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import jwt, {JwtPayload} from "jsonwebtoken";
+import { HttpStatus } from "../../shared/enums/http-statuses";
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret";
 
@@ -18,16 +19,16 @@ export function authMiddleware(
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({
-      status: 401,
+    return res.status(HttpStatus.UNAUTHORIZED).json({
+      status: HttpStatus.UNAUTHORIZED,
       data: null,
       message: "No se identificó autenticación",
     });
   }
 
   if (!authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({
-      status: 401,
+    return res.status(HttpStatus.UNAUTHORIZED).json({
+      status: HttpStatus.UNAUTHORIZED,
       data: null,
       message: "Formato de token inválido. Usa: Bearer <token>",
     });
@@ -42,15 +43,15 @@ export function authMiddleware(
     return next();
   } catch (error: any) {
     if (error.name === "TokenExpiredError") {
-      return res.status(401).json({
-        status: 401,
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        status: HttpStatus.UNAUTHORIZED,
         data: null,
         message: "Token vencido",
       });
     }
 
-    return res.status(401).json({
-      status: 401,
+    return res.status(HttpStatus.UNAUTHORIZED).json({
+      status: HttpStatus.UNAUTHORIZED,
       data: null,
       message: "Token inválido",
     });

@@ -21,7 +21,7 @@ export class TaskFactory {
 
       // campos para softdelete
       isActive: true,
-      deletedAt:undefined
+      deletedAt:null
     };
   }
 }

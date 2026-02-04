@@ -9,6 +9,7 @@ import { asyncHandler } from "../../shared/async-handler";
 import { ITaskRequestDto } from "../../task/application/dtos/task-request.dto";
 import { GetTaskByIdUseCase } from "../../task/application/use-cases/get-task-by-id.usecase";
 import { ITaskResponseDto } from "../../task/application/dtos/task-response.dto";
+import { HttpStatus } from "../../shared/enums/http-statuses";
 
 
 export class TaskController {
@@ -24,7 +25,7 @@ export class TaskController {
   getTasks = asyncHandler(async (req: AuthRequest, res: Response) => {
     const tasks = await this.getTaskByUserIdsUC.execute(req.user?.userId ?? "");
 
-    res.status(200).json(successResponse(200, tasks, "Tareas obtenidas"));
+    res.status(HttpStatus.OK).json(successResponse(HttpStatus.OK, tasks, "Tareas obtenidas"));
   });
 
   createTask = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -32,10 +33,10 @@ export class TaskController {
     const task = await this.createTaskUC.execute(req.user?.userId ?? "", dto);
 
     if (!task) {
-      return res.status(404).json(errorResponse(404, "No se encontraron tareas"));
+      return res.status(HttpStatus.NOT_FOUND).json(errorResponse(HttpStatus.NOT_FOUND, "No se encontraron tareas"));
     }
 
-    return res.status(201).json(successResponse(200, task, "Tarea creada exitosamente"));
+    return res.status(HttpStatus.CREATED).json(successResponse(HttpStatus.CREATED, task, "Tarea creada exitosamente"));
   });
 
   updateTask = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -46,11 +47,11 @@ export class TaskController {
     const existingTask = await this.getTaskByIdUC.execute(taskId, req.user?.userId ?? "");
 
     if (!existingTask) {
-      return res.status(404).json(errorResponse(404, "La tarea no fue encontrada"));
+      return res.status(HttpStatus.NOT_FOUND).json(errorResponse(HttpStatus.NOT_FOUND, "La tarea no fue encontrada"));
     }
 
     const task = await this.updateTaskUC.execute(taskId, req.user?.userId ?? "", dto);
-    return res.status(200).json(successResponse(201, task, "Tarea actualizada exitosamente"));
+    return res.status(HttpStatus.OK).json(successResponse(HttpStatus.OK, task, "Tarea actualizada exitosamente"));
   });
 
   deleteTask = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -60,11 +61,11 @@ export class TaskController {
     const existingTask = await this.getTaskByIdUC.execute(taskId, req.user?.userId ?? "");
 
     if (!existingTask) {
-      return res.status(404).json(errorResponse(404, "La tarea no fue econtrada"));
+      return res.status(HttpStatus.NOT_FOUND).json(errorResponse(HttpStatus.NOT_FOUND, "La tarea no fue econtrada"));
     }
 
     const task = await this.deleteTaskUC.execute(taskId, req.user?.userId ?? "");
-    return res.status(200).json(successResponse(201, task, "Tarea eliminada con exitosamente"));
+    return res.status(HttpStatus.OK).json(successResponse(HttpStatus.OK, task, "Tarea eliminada con exitosamente"));
   });
 
 
