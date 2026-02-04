@@ -38,7 +38,7 @@ export class AuthController {
     const token = await this.loginUseCase.execute(email);
 
     if (!token) {
-      return res.status(HttpStatus.NOT_FOUND).json(errorResponse(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+      return res.status(HttpStatus.OK).json(errorResponse(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
     }
 
     return res.status(HttpStatus.OK).json(successResponse(HttpStatus.OK, { token }, "Usuario verificado"));
