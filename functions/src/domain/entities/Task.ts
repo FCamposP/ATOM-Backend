@@ -7,5 +7,4 @@ export interface ITask {
     createdAt: Date;
     isActive: boolean;
     deletedAt?: Date;
-    modifiedAt?: Date
 }

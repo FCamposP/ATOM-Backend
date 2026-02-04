@@ -4,11 +4,7 @@ export interface ResponseWrapper<T> {
   message: string;
 }
 
-export function successResponse<T>(
-  status: number,
-  data: T,
-  message: string
-): ResponseWrapper<T> {
+export function successResponse<T>(status: number, data: T, message: string): ResponseWrapper<T> {
   return {
     status,
     data,
@@ -16,10 +12,7 @@ export function successResponse<T>(
   };
 }
 
-export function errorResponse(
-  status: number,
-  message: string
-): ResponseWrapper<null> {
+export function errorResponse(status: number, message: string): ResponseWrapper<null> {
   return {
     status,
     data: null,

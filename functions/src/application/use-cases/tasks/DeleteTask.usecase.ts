@@ -1,9 +1,9 @@
-import {TaskRepository} from "../../../domain/repositories/TaskRepository";
+import { TaskRepository } from "../../../domain/repositories/TaskRepository";
 
 export class DeleteTaskUseCase {
-  constructor(private repo: TaskRepository) {}
+  constructor(private repo: TaskRepository) { }
 
-  async execute(taskId: string, userId: string) {
+  async execute(taskId: string, userId: string): Promise<boolean> {
     const task = await this.repo.findById(taskId);
 
     if (!task || task.userId !== userId) return false;

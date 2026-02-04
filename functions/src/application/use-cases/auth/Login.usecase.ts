@@ -5,9 +5,9 @@ const JWT_SECRET = process.env.JWT_SECRET || "super-secret";
 
 export class LoginUseCase {
   constructor(private userRepo: UserRepository) {}
-  async execute(email: string) {
+  async execute(email: string):Promise<string> {
     const user = await this.userRepo.findByEmail(email);
-    if (!user) return null;
+    if (!user) return "";
     return jwt.sign(
       {userId: user.id, email: user.email},
       JWT_SECRET,
